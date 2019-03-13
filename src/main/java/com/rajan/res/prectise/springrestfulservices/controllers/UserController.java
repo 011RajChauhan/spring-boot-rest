@@ -4,10 +4,10 @@ import com.rajan.res.prectise.springrestfulservices.exceptions.UserNotFoundExcep
 import com.rajan.res.prectise.springrestfulservices.users.User;
 import com.rajan.res.prectise.springrestfulservices.users.UserServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.hateoas.Resource;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public EntityModel<User> getUser(@PathVariable String userId) {
+    public Resource<User> getUser(@PathVariable String userId) {
         User user;
         int id;
         try {
@@ -40,10 +40,10 @@ public class UserController {
         } catch (NumberFormatException nfe) {
             throw new NumberFormatException("User id can only be a number, invalid user id - " + userId);
         }
-        EntityModel<User> entityModel = new EntityModel<User>(user);
-        WebMvcLinkBuilder linkTo =  linkTo(methodOn(this.getClass()).getAllUsers());
-        entityModel.add(linkTo.withRel("all-users"));
-        return entityModel;
+        Resource<User> resource = new Resource<>(user);
+        ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getAllUsers());
+        resource.add(linkTo.withRel("all-users"));
+        return resource;
     }
 
     @PostMapping("/users")
