@@ -7,7 +7,7 @@ public class PersonTwo {
     public PersonTwo() {
     }
 
-    private PersonTwo(Name name) {
+    public PersonTwo(Name name) {
         this.name = name;
     }
 
